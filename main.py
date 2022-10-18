@@ -3,6 +3,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import pandas as pd
+import os
+from googleapiclient.http import MediaFileUpload
+from Google import Create_Service
 
 try:
 
@@ -58,10 +61,48 @@ try:
         df.to_excel("vegies.xlsx")
         df.to_csv("vegies.csv")
 
+    def excel_converter(file_path: str, folder_ids: list = None):
+        CLIENT_SECRET_FILE ='secret_key.json'
+        API_NAME = 'drive'
+        API_VERSION = 'v3'
+        SCOPES = ['https://www.googleapis.com/auth/drive']
+
+        service = Create_Service(CLIENT_SECRET_FILE, API_NAME,API_VERSION,SCOPES)
+        print((service))
+
+        if not os.path.exists(file_path):
+            print(f'{file_path} not found')
+            return
+        try:
+            file_metadata = {
+                'name': os.path.splitext(os.path.basename(file_path))[0],
+                'mimeType': 'application/vnd.google-apps.spreadsheet',
+                'parents': folder_ids
+            }
+
+            media = MediaFileUpload(filename=file_path, mimetype='application/vnd.google-apps.spreadsheet')
+            print(media)
+            response = service.files().create(
+                media_body=media,
+                body=file_metadata
+            ).execute()
+
+            print(response)
+            return(response)
+        except Exception as e:
+            print(e)
+            return
+
 except Exception as e:
     print(e)
 
 if __name__=='__main__':
-    url = "https://blinkit.com/cn/vegetables-fruits/fresh-vegetables/cid/1487/1489/"
-    data = crawl_url(url)
-    export_data(data)
+    # url = "https://blinkit.com/cn/vegetables-fruits/fresh-vegetables/cid/1487/1489/"
+    # data = crawl_url(url)
+    # export_data(data)
+    excel_files= os.listdir('../excels')
+    for excel_file in excel_files:
+        print(os.path.join('../excels', excel_file))
+        excel_converter(os.path.join('../excels', excel_file))
+
+    # excel_converter()
