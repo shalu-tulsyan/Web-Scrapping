@@ -1,5 +1,4 @@
-vegies.csv
 vegies.xlsx
-secret_key.json
-token_drive_v3.pickle
-Google.cpython-310.pyc
+__pycache__/Google.cpython-310.pyc
+secret_key/
+token-drive_v3.pickle

@@ -62,7 +62,7 @@ try:
         df.to_csv("vegies.csv")
 
     def excel_converter(file_path: str, folder_ids: list = None):
-        CLIENT_SECRET_FILE ='secret_key.json'
+        CLIENT_SECRET_FILE ='./secret_key/secret_key.json'
         API_NAME = 'drive'
         API_VERSION = 'v3'
         SCOPES = ['https://www.googleapis.com/auth/drive']
