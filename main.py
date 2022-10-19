@@ -74,14 +74,14 @@ try:
             print(f'{file_path} not found')
             return
         try:
+            print(os.path.splitext(os.path.basename(file_path))[0])
             file_metadata = {
                 'name': os.path.splitext(os.path.basename(file_path))[0],
                 'mimeType': 'application/vnd.google-apps.spreadsheet',
                 'parents': folder_ids
             }
-
-            media = MediaFileUpload(filename=file_path, mimetype='application/vnd.google-apps.spreadsheet')
-            print(media)
+            print(file_path)
+            media = MediaFileUpload(filename=file_path, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             response = service.files().create(
                 media_body=media,
                 body=file_metadata
@@ -102,7 +102,6 @@ if __name__=='__main__':
     # export_data(data)
     excel_files= os.listdir('../excels')
     for excel_file in excel_files:
-        print(os.path.join('../excels', excel_file))
-        excel_converter(os.path.join('../excels', excel_file))
+        excel_converter(os.path.join('../excels/', excel_file))
 
     # excel_converter()

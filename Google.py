@@ -2,7 +2,6 @@ import pickle
 import os
 from google_auth_oauthlib.flow import Flow, InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from google.auth.transport.requests import Request
 
 
@@ -11,14 +10,14 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
     API_SERVICE_NAME = api_name
     API_VERSION = api_version
     SCOPES = [scope for scope in scopes[0]]
-    print(CLIENT_SECRET_FILE)
+
 
     cred = None
 
     pickle_file = f'token_{API_SERVICE_NAME}_{API_VERSION}.pickle'
 
+
     if os.path.exists(pickle_file):
-        print("work")
         with open(pickle_file, 'rb') as token:
             cred = pickle.load(token)
 
@@ -33,6 +32,8 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
             pickle.dump(cred, token)
 
     try:
+
+        print(cred)
         service = build(API_SERVICE_NAME, API_VERSION, credentials=cred)
         print(API_SERVICE_NAME, 'service created successfully')
         return service
